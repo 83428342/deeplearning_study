@@ -40,7 +40,8 @@ A. SGD는 GD와 기울기의 '대략적인 방향은 같음' -> 근사적으로 
 
 다만 GD와 SGD는 모두 fixed step size를 가진다는 점에서 한계가 존재 할 수 있음 -> Momentum, RMS-Prop, Adam 등의 기법 이용 가능.
 
-
++) 정확한 SGD의 정의는 모든 데이터 중 단 한 개의 샘플만 사용한 것이며 GD는 전부 사용한 것 -> 실제 학습 시에는 미니 배치 단위로 끊어 optimization을 적용함 (둘의 중간 지점)
++) batch: 전체 데이터셋, mini-batch: 전체 데이터셋의 부분 집합
 
 
 
