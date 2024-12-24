@@ -68,4 +68,4 @@ BERT: 문장에 빈칸을 만들고 빈칸에 알맞은 토큰을 예측(Masked 
 - 용어1: Agent(행동을 취하는 주체), Action(Agent가 취할 수 있는 모든 행동), Reward(Agent가 Action에 따라 받게 되는 보상. 강화 학습의 핵심 전제는 Agent가 Reward를 최대화하려 한다는 것), Environment(강화 학습이 일어나는 공간)
 - 용어2: State(환경의 현재 상태를 나타냄), 행동 가치 함수 Q(특정 State에서 특정 Action을 했을 때 현재와 미래에 얻을 수 있는 Reward 합의 기댓값), Episode(완료까지의 하나의 완전한 시행)
 - 용어3: Q-Learning(Episode 내에서 Action을 여러 번 수행하여 Q 값을 반복적으로 업데이트해 최적의 행동 가치를 학습하는 방법. 현재 State와 Action, Reward, 다음 State의 정보를 사용하여 Q값 갱신), 심층 강화 학습(Deep Reinforcement Learning: Q-Learning에서 Q값을 딥러닝을 이용해 학습)
-- 용어4: Exploration(기존에 학습하지 않은 새로운 방법을 찾는 것, &epsilon;을 이용해 일탈 빈도 조정), Exploitation(기존 지식을 활용하는 것, Exploration과 균형을 이루어야 함), Discount Factor &gamma;(Q값을 현재 시점으로 가져올 때 곱하는 0과 1 사이의 값. 1에 가까울수록 미래의 보상을 중요하게 여김.)
+- 용어4: Exploration(기존에 학습하지 않은 새로운 방법을 찾는 것, &epsilon;-Greedy 기법의 &epsilon;값 조정을 이용해 일탈 빈도 조정), Exploitation(기존 지식을 활용하는 것, Exploration과 균형을 이루어야 함), Discount Factor &gamma;(Q값을 현재 시점으로 가져올 때 곱하는 0과 1 사이의 값. 1에 가까울수록 미래의 보상을 중요하게 여김.)
