@@ -68,4 +68,20 @@ BERT: 문장에 빈칸을 만들고 빈칸에 알맞은 토큰을 예측(Masked 
 - 용어1: Agent(행동을 취하는 주체), Action(Agent가 취할 수 있는 모든 행동), Reward(Agent가 Action에 따라 받게 되는 보상. 강화 학습의 핵심 전제는 Agent가 Reward를 최대화하려 한다는 것), Environment(강화 학습이 일어나는 공간)
 - 용어2: State(환경의 현재 상태를 나타냄), 행동 가치 함수 Q(특정 State에서 특정 Action을 했을 때 현재와 미래에 얻을 수 있는 Reward 합의 기댓값), Episode(완료까지의 하나의 완전한 시행)
 - 용어3: Q-Learning(Episode 내에서 Action을 여러 번 수행하여 Q 값을 반복적으로 업데이트해 최적의 행동 가치를 학습하는 방법. 현재 State와 Action, Reward, 다음 State의 정보를 사용하여 Q값 갱신), 심층 강화 학습(Deep Reinforcement Learning: Q-Learning에서 Q값을 딥러닝을 이용해 학습)
-- 용어4: Exploration(기존에 학습하지 않은 새로운 방법을 찾는 것, &epsilon;-Greedy 기법의 &epsilon;값 조정을 이용해 일탈 빈도 조정), Exploitation(기존 지식을 활용하는 것, Exploration과 균형을 이루어야 함), Discount Factor &gamma;(Q값을 현재 시점으로 가져올 때 곱하는 0과 1 사이의 값. 1에 가까울수록 미래의 보상을 중요하게 여김.)
+- 용어4: Exploration(기존에 학습하지 않은 새로운 방법을 찾는 것, &epsilon;-Greedy 기법의 &epsilon;값을 0과 1 사이로 조정해 일탈 빈도 조정), Exploitation(기존 지식을 활용하는 것, Exploration과 균형을 이루어야 함), Discount Factor &gamma;(Q값을 현재 시점으로 가져올 때 곱하는 0과 1 사이의 값. 1에 가까울수록 미래의 보상을 중요하게 여김)
+
+*Chapter2*
+
+인공 신경망(Artificial Neural Network)
+- 곱하고 더하고 액티베이션하는 과정의 연속
+- 활성화 함수(Activation Function): 들어오는 값에 따라 나가는 값 결정, Unit Step Function(계단 함수: 들어온 값 총합 양수면 1, 아니면 0), Linear Activation(선형 액티베이션: 들어온 값 그대로 출력) 등 존재.
+- weight, bias를 넣어 민감도 조절.
+- 노드끼리 모두 연결된 층은 FC(Fully-Connected) 레이어라고 함
+- MLP(Multi-Layer Perceptron): 인풋, 아웃풋, 히든 레이어를 하나 이상 가지면서 모든 레이어가 FC 레이어인 신경망
+- 딥러닝의 핵심은 weight와 bias를 어떻게 조정하는지이고 이것을 학습이라 함(weight만 조정하는 것이 아님!).
+
+Loss
+- Loss를 단순히 각각 데이터 세트의 loss를 더한 값으로 하면 양수와 음수 모두 포함되기 때문에 정확한 loss값 추정이 어려울 수 있음 -> 제곱해서 더하거나 절댓값을 더해야 함. 단, 제곱 시에는 Outlier(이상치)에 더 민감하게 반응 -> 절댓값 에러보다 이상치에 더 가깝게 예측선을 수정함.
+- MSE(Mean Squared Error) Loss: 에러를 제곱한 후 더해 평균냄
+- MAE(Mean Absolute Error) Loss: 에러에 절댓값을 씌운 후 더해 평균냄
+- 
