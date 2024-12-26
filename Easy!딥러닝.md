@@ -89,6 +89,25 @@ MAE(Mean Absolute Error) Loss: 에러에 절댓값을 씌운 후 더해 평균�
 - Learning Rate: Gradient 반대 방향으로 이동할 때의 보폭 -> 너무 작으면 최소점에 도달하는데 오래 걸리고 너무 크면 최소점을 지나 발산하거나 불안정한 모습 보임. 일반적으로 0.1, 0.01, 0.001 등을 사용.
 - 두 가지 문제점: 계산 속도가 느리다(모든 데이터를 고려하기 때문), 좋지 않은 Local Minimum에 빠질 수 있다. -> SGD를 이용하여 해결.
 
+확률적 경사 하강법(Stochastic Gradient Descent)
+- 모든 데이터의 Loss를 고려하는 GD와 달리 단 하나의 데이터만을 무작위로 선택해 Loss 계산
+- 기존 GD의 속도 문제와 Local Minimum에 빠지는 문제 완화 가능
+- Mini-Batch Gradient Descent: 단 하나의 데이터가 아닌 Mini-Batch 데이터에 대한 Loss 계산하는 방식. 대규모 데이터셋에서는 단순 SGD보다 성능 좋음.
+- GD와 SGD는 Loss함수의 등고선이 타원형일 때 효율적인 학습이 어려움.
+- GD와 SGD는 현재의 Gradient만 고려함 -> 과거의 Gradient를 고려하는 새로운 방법들을 아래에 소개함.
+
+Momentum
+- 이전 Gradient들을 누적하여 현재의 이동 방향 결정(관성과 비슷).
+
+RMSProp(Root Mean Squared Propagation)
+- Momentum과 달리 각 파라미터에 대한 편미분값을 제곱하여 누적.
+- 가파른 축으로는 조심스럽게, 완만한 축으로는 과감하게 이동하는 효과를 줌.
+- 급격한 이동 방지 및 평평한 영역을 빠르게 탈출 가능. -> 학습의 안정성을 높임.
+
+Adam(Adaptive Moment Estimation)
+- Momentum과 RMSProp의 장점을 결합한 최적화 알고리즘
+- Momentum의 관성 효과, PMSProp의 적응적 이동 방향 조정, 학습 초반 편향 문제 모두 해결
+
 **웨이트 초기화(Weight Initialization)**
 - 세 가지 방식이 널리 알려짐. 공통적으로 weight를 평균이 0인 랜덤한 값으로 초기화하며 분산이 다른 차이점이 있음.
 - 모든 층의 웨이트를 하나의 정규분포로 초기화하는것이 아닌 각 층마다 정규분포로 초기화하는것임.
@@ -109,3 +128,12 @@ Xavier 초기화
 - 두 분포 모두 평균 0, 분산 2/(N_in + N_out), 다른 초기화와 달리 N_out도 고려.
 - 다른 방식들보다 작은 분산으로, 0에 더 가깝게 초기화.
 - Sigmoid나 tanh과 같은 활성화 함수 사용할 때 특히 효과적인 것으로 알려져 있음.
+
+- N_in을 고려하는 이유는 activation에 들어가는 개수가 많아질수록 분산이 커지므로 이를 줄여주기 위해서임 -> 분산이 너무 크면 그래디언트 소실(Vanishing Gradient: 그래디언트가 0에 가까워짐) 문제 발생.
+- N_out을 고려하는 이유는 역전파 과정을 위함(이후 자세히 다룸) -> 그래디언트 폭발(Exploding Gradient)문제 발생.
+
+Batch Size와 Learning Rate의 조절
+- Batch Size는 하나의 Batch에 몇 개의 데이터가 들어갈건지를 의미함(등분x).
+- 일반적으로 Batch Size가 커질수록 Validation error가 증가한다. 왜냐하면 배치 크기가 클수록 모델이 훈련 데이터에 과적합되는 경향이 있기 때문임. (배치 크기가 크면 특정한 최소점 도달이 더 쉽고 배치마다의 특성이 비슷해지기 때문)
+- 이를 해결하기 위해서는 Linear Scaling Rule(Batch Size를 늘리면 Learning Rate도 비례해서 키움), Learning Rate Warmup(학습 초기에 Learning Rate를 0에서 시작하여 점진적으로 증가시킴)을 사용함(Learning Rate를 조절하는 것을 Learning Rate Scheduling이라 부름).
+- 
