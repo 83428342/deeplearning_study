@@ -136,4 +136,8 @@ Batch Size와 Learning Rate의 조절
 - Batch Size는 하나의 Batch에 몇 개의 데이터가 들어갈건지를 의미함(등분x).
 - 일반적으로 Batch Size가 커질수록 Validation error가 증가한다. 왜냐하면 배치 크기가 클수록 모델이 훈련 데이터에 과적합되는 경향이 있기 때문임. (배치 크기가 크면 특정한 최소점 도달이 더 쉽고 배치마다의 특성이 비슷해지기 때문)
 - 이를 해결하기 위해서는 Linear Scaling Rule(Batch Size를 늘리면 Learning Rate도 비례해서 키움), Learning Rate Warmup(학습 초기에 Learning Rate를 0에서 시작하여 점진적으로 증가시킴)을 사용함(Learning Rate를 조절하는 것을 Learning Rate Scheduling이라 부름).
-- 
+
+K-fold cross validation
+- 데이터가 부족할 때 검증 데이터를 더 효과적으로 활용하기 위해 사용 -> 훈련 데이터 개수가 너무 적으면 편향 문제가 발생할 수 잇기 때문임.
+- K개의 훈련/검증 데이터 조합을 만들고 각 조합에 대한 평균 Loss를 구함 -> K배의 학습 시간이 필요한 단점이 있음.
+- 보통 하이퍼파라미터를 케이스를 나누고 해당 케이스마다 K-fold를 적용해 평균 loss가 가장 낮은 케이스의 하이퍼파라미터를 채용함. 그 이후에는 해당 케이스로 검증 데이터 없이 전부 훈련에 사용해 모델을 만들거나 K개의 모델을 앙상블하는 방식 중 선택하게 됨. 
