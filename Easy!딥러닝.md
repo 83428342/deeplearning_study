@@ -160,4 +160,31 @@ ReLU(Rectified Linear Unit)
 - 추가적으로 노드 수가 증가할 때는 정보 손실이 없지만 추가적인 정보가 생성되는 것은 아님.
 
 **역전파(Backpropagation)**
-- 
+- 다시 돌아와서 보자.
+
+*Chapter4*
+
+- 이진 분류(Binary Classification)에는 Sigmoid 사용, 다중 분류(Multiclass Classification)에는 Softmax 사용.
+- 이진 분류에는 BCE(Binary Cross-Entropy) Loss 사용, 다중 분류에는 Cross-Entropy Loss 사용.
+- 퍼셉트론: hidden layer 없이 unit step function을 활성화 함수로 사용허눈 단층 신경망 모델.
+- 선형 분류: 분류 경계가 선형인 경우. (입력과 출력의 관계는 비선형적일수 있음.)
+
+Unit Step Function을 사용한 모델의 두 가지 문제점 -> Sigmoid 도입해서 해결.
+- 미분 불가능: 역전파 과정에서 모든 파라미터에 대한 편미분이 0이 되어 학습 불가능.
+- 극단적 분류: 출력값이 0 또는 1이기에 분류 경계선 근처의 미묘한 차이 반영X.
+
+Sigmoid function
+- ![image](https://github.com/user-attachments/assets/1d923ba8-0562-48e9-a46a-abbf043d0dc9)
+- 전 구간 미분 가능 -> 그래디언트 최적화 가능.
+- 출력값의 범위가 0 ~ 1이므로 확률로 해석 가능. -> 더 합리적인 분류 경계선을 찾기 용이하다.
+
+BCE Loss(MLE: Maximum Likelihood Estimation 관점에서 해석)
+- ![image](https://github.com/user-attachments/assets/c6594c0b-1e28-4493-b1cc-c167b1e1b783)
+- N은 샘플의 총 개수, y는 실제 레이블, y_hat은 모델이 예측한 확률.
+- Underflow 문제: ![image](https://github.com/user-attachments/assets/bb542001-5064-4bc5-9ffb-6130b5f8b348) 기본적으로는 이와 같이 식이 나오는데, 곱하는 과정에서 값이 계속 작아지기 때문에 로그를 취함(컴퓨터의 부동소수점 문제 해결).
+- 로그 내부의 값이 0과 1 사이이므로 로그 앞에 -1을 곱해 양수로 만들어줌. -> 굳이 양수로 만드는 이유는 '최소화'문제로 바꾸기 위함임.
+
+로지스틱 회귀(Logistic Regression)
+- 입력과 출력 사이의 관계를 확률 함수로 표현하고 이 함수를 은닉층이 없는 인공 신경망으로 놓고 추정하는 방법.
+- 분류 문제를 다루지만 회귀라는 이름을 가짐(근본적으로 두 방식이 같은 접근 방식이기 때문).
+
