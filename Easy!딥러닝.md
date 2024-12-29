@@ -175,6 +175,7 @@ Unit Step Function을 사용한 모델의 두 가지 문제점 -> Sigmoid 도입
 
 Sigmoid function
 - ![image](https://github.com/user-attachments/assets/1d923ba8-0562-48e9-a46a-abbf043d0dc9)
+- 사실 이 수식은 다양한 Sigmoid 중 Logistic function임. (그래프가 이와 같이 S자형을 갖는 모든 함수들을 Sigmoid라고 총칭함.)
 - 전 구간 미분 가능 -> 그래디언트 최적화 가능.
 - 출력값의 범위가 0 ~ 1이므로 확률로 해석 가능. -> 더 합리적인 분류 경계선을 찾기 용이하다.
 
@@ -187,4 +188,46 @@ BCE Loss(MLE: Maximum Likelihood Estimation 관점에서 해석)
 로지스틱 회귀(Logistic Regression)
 - 입력과 출력 사이의 관계를 확률 함수로 표현하고 이 함수를 은닉층이 없는 인공 신경망으로 놓고 추정하는 방법.
 - 분류 문제를 다루지만 회귀라는 이름을 가짐(근본적으로 두 방식이 같은 접근 방식이기 때문).
+- 로지스틱 회귀는 입력과 출력 사이의 관계를 Logistic 함수로 놓고 이 함수의 파라미터를 추정하는 것을 목표로 함.
+- 또 다른 관점에서는 Logit(= Log-Odds, Odds에 로그를 취한 값)을 선형 회귀를 통해 구하는 것으로 해석함.
+- Odds: 승리 확률(q)을 패배 확률로 나눈 값. ![image](https://github.com/user-attachments/assets/872ae4f7-ca24-44eb-ae63-bb5d646cb774)
+- Logit: ![image](https://github.com/user-attachments/assets/31010a4f-ceca-453b-b337-4db7548dbf2e)
+- Logit의 q에 대해 정리하면 ![image](https://github.com/user-attachments/assets/e37458aa-8db9-4eb4-b85d-07b11142c4fa)가 됨.
+- 즉, 로지스틱 회귀는 입력을 받아 Logit을 출력하는 신경망(선형 회귀)과 Logit을 확률로 변환하는 Sigmoid 함수의 두 단계로 나뉘어져있음.
+- 즉, 인공 신경망의 역할은 입력값과 Logit 사이의 선형 관계를 찾는 것이며 Sigmoid는 Logit을 확률로 변환하고 BCE Loss를 계산하기 위해 사용되는 함수임.
+- 따라서 로지스틱 회귀는 선형 회귀를 통해 Logit을 예측하고 이를 확률로 변환하여 이진 분류 문제를 해결하는 방법임.
+
+이진 분류에 MSE Loss를 도입하면 어떻게 될까?
+- 실험을 위해 레이블이 1인 데이터 하나에 대한 MSE Loss와 BCE Loss를 비교해 보겠음.
+- 이 때 MSE Loss는 ![image](https://github.com/user-attachments/assets/fd7c118d-1646-4b9f-b353-acc615042b24), BCE Loss는 ![image](https://github.com/user-attachments/assets/8d68feb7-c833-4788-b98e-077264b3d142) 가 됨.
+- 그래프로 표현하면 0 < q < 1의 범위에서 MSE Loss는 이차함수, BCE Loss는 로그함수의 형태를 띄며 BCE Loss는 0으로 다가갈수록 무한대로 발산함.
+- 여기서 BCE가 상대적으로 예측 오류에 더 민감하게 반응한다는 것을 알 수 있음 -> BCE는 잘못된 예측에 더 강한 페널티를 부과함.
+- 또한 웨이트 w에 대해 q로 정리 시 MSE Loss는 Non-Convex이고 BCE는 Convex이다. (Convex: 아래로 볼록한 함수로 단 하나의 Minimum인 Global Minimum을 가짐.)
+- 물론 출력층 이전 층들의 w에 대해서는 둘 모두 Non-Convex이겠지만 같은 조건에서는 BCE가 Non-Convex한 정도가 덜해 최적화 과정의 안정성 면에서 BCE가 유리함.
+- 결론: 이진 분류 문제에서는 BCE Loss가 잘못된 예측에 더 강력한 페널티를 부과하고 최적화 과정에서 더 안정적인 특성을 보여주기 때문에 사용됨.
+- 물론 상황에 따라 다를 수는 있다..
+
+딥러닝과 MLE
+- Loss를 최소화하는 파라미터를 찾는 학습 과정은 MLE를 최대로 하는 파라미터를 찾는 과정과 같음.
+- 사실 BCE와 MLE도 이 맥락에서는 Likelihood 최대화라는 공통점을 갖는다.
+- 자세한 수학적 개념은 MML 공부하면서 다룰 예정. (생략함)
+
+Loss 함수와 NLL(Negative Log-Likelihood)
+- ![image](https://github.com/user-attachments/assets/cf6c4708-7489-4ade-b5ff-5e102521a939) 이 식은 베르누이 분포임..
+- 그리고 이 식은 개별 시행이 독립시행임을 가정했음.
+- 여기서 -1/n log를 취한게 바로 BCE Loss.
+- NLL의 정의는 이런식으로 Likelihood에 -log를 취한것임.
+- MSE Loss도 가우시안 분포를 따른다고 가정하고 NLL을 구하면 얻을 수 있음.
+- 즉, 베르누이 분포에 NLL 취하면 BCE Loss, 가우시안 분포에 NLL 취하면 MSE Loss가 됨.
+- 따라서 BCE와 MSE는 가정한 분포가 다를 뿐 NLL을 취한 공통점이 있음.
+- MAE Loss 또한 라플라스 분포에서 NLL을 취했을 뿐.
+
+- 정리하면 MSE는 가우시안, BCE는 베르누이, MAE는 라플라스 분포에 NLL을 취한 것.
+- 이진 분류 문제는 베르누이 분포(이산적 값)에 적합하기 때문에 BCE를 쓰는 것이라 해석 가능.
+- 회귀에서는 가우시안 분포(연속적 값)에 적합하기 때문에 MSE를 쓰는 것이라 해석 가능
+- 라플라스 분포는 가우시안 분포에 비해 꼬리 부분의 확률밀도가 더 크기 때문에 Outlier에 영향 덜 받음 -> 이상치 많으면 MAE Loss를 쓰는것이 좋음. (이전에 논의한 것과 같은 결과)
+- 추가적으로 다중 분류는 Cross-Entropy Loss가 유리. 카테고리 분포(Categorical Distribution)에서 따옴.
+
+- 결론적으로 분포를 f(x)라고 하면 Loss함수의 일반적인 표현식을 ![image](https://github.com/user-attachments/assets/75ad92a2-c043-4beb-b24e-394e3bef208a) 라 표현할 수 있음.
+- 따라서 문제의 특성에 맞는 확률 분포를 알맞게 가정하고 이에 기반한 Loss 함수를 직접 설계할 수 있어야 함.
 
