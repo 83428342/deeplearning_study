@@ -224,10 +224,32 @@ Loss 함수와 NLL(Negative Log-Likelihood)
 
 - 정리하면 MSE는 가우시안, BCE는 베르누이, MAE는 라플라스 분포에 NLL을 취한 것.
 - 이진 분류 문제는 베르누이 분포(이산적 값)에 적합하기 때문에 BCE를 쓰는 것이라 해석 가능.
-- 회귀에서는 가우시안 분포(연속적 값)에 적합하기 때문에 MSE를 쓰는 것이라 해석 가능
+- 회귀에서는 가우시안 분포(연속적 값)에 적합하기 때문에 MSE를 쓰는 것이라 해석 가능.
 - 라플라스 분포는 가우시안 분포에 비해 꼬리 부분의 확률밀도가 더 크기 때문에 Outlier에 영향 덜 받음 -> 이상치 많으면 MAE Loss를 쓰는것이 좋음. (이전에 논의한 것과 같은 결과)
 - 추가적으로 다중 분류는 Cross-Entropy Loss가 유리. 카테고리 분포(Categorical Distribution)에서 따옴.
 
 - 결론적으로 분포를 f(x)라고 하면 Loss함수의 일반적인 표현식을 ![image](https://github.com/user-attachments/assets/75ad92a2-c043-4beb-b24e-394e3bef208a) 라 표현할 수 있음.
 - 따라서 문제의 특성에 맞는 확률 분포를 알맞게 가정하고 이에 기반한 Loss 함수를 직접 설계할 수 있어야 함.
 
+다중 분류
+- One-Hot Encoding을 이용해 각 클래스를 표현함. (클래스 내의 우선순위를 부여하지 않게 됨. 클래스별로 0, 1, 2...식으로 표현하면 거리가 표현된다는 문제가 생김.)
+- 이 때 출력층이 0과 1 사이에 나오지 않으면 문제가 생김. 이를 위해 Softmax함수를 이용함.
+- Softmax를 사용하면 출력의 합이 1이 되므로 나머지 값들은 자연스럽게 0이 됨 -> 정답 출력값을 담당하는 노드 이외의 출력값은 고려하지 않아도 됨. -> softmax를 사용하면 해당 분류에서는 각 노드의 웨이트는 해당하는 클래스의 학습만 관여함. (더욱 독립적.)
+- Sigmoid를 각 노드에 적용한다면 출력값의 합이 1이 되지 않아도 값들의 상대적 크기를 비교해 분류가 가능함. 단, One-Hot Encoding의 특성을 제대로 살릴 수 없어 효율적이지 않음.
+  
+- 단, 예외적으로 하나의 이미지에 여러 클래스가 있는 다중 레이블 분류(Multi-label Classification)에는 Sigmoid가 더 적합함! (레이블 벡터의 성분 합이 1이 아니기 때문. ex.[0, 1, 1, 0, 0] 가능.)
+
+Cross-Entropy Loss
+- 다중 분류에서 레이블이 카테고리 분포(Categorical Distribution)을 따른다고 가정하고 NLL을 구한 Loss.
+- 카테고리 분포는 베르누이 분포를 확장한 개념으로, 멀티누이 분포(Multinoulli Distribution)라고도 부름.
+- 베르누이 분포는 0또는 1의 단일 값에 대한 확률을 다루지만 카테고리 분포는 [1, 0, 0]같은 랜덤 벡터에 대한 확률을 다룸.
+- 수식적으로는 ![image](https://github.com/user-attachments/assets/e8439d5e-0f44-418a-8aac-601272360809)임.
+- 예를 들어 세 개의 클래스의 경우에는 ![image](https://github.com/user-attachments/assets/12036992-4b43-4efc-bf39-0da4b19ae7fa)와 같다.
+- 여기에 NLL 씌우면 그게 Cross-Entropy Loss임.
+- CE의 재미있는 성질 중 하나는 항상 실제 분포의 Entropy보다 크거나 같다는 것임. (궁금하면 증명해보자.) 이 성질은 CE를 줄일수록 q가 y에 가까워진다는 것을 의미함.
+
+Softmax 회귀(Softmax Regression, Logistic Regression을 여러 클래스로 확장했다는 의미에서 Multinomial Logistic Regression이라고도 함)
+- 입력과 출력 사이의 관계를 여러 클래스에 대한 확률 분포 함수로 표현하고 이 함수를 은닉층이 없는 인공 신경망으로 놓고 추정하는 방법.
+- Logit들을 선형 회귀를 통해 구하는 것(로지스틱 회귀와 같음).
+- 두 단계로 나누면 데이터를 입력받아 Logit들을 출력하는 신경망(선형 회귀) 단계와 이후 Logit들을 확률 분포로 변환하는 Softmax 함수가 있는 단계로 해석 가능.
+- 결론적으로 Softmax 회귀는 선형 회귀를 통해 Logit들을 예측하고, 이를 확률 분포로 변환하여 다중 분류 문제를 해결하는 방법임.
