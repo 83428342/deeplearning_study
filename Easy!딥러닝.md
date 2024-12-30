@@ -399,3 +399,4 @@ Skip-Connection
 Regularization과 MAP(Maximum A Posteriori)
 - L1-Regularization과 L2-Regularization 모두 MAP 관점에서 해석하면 같은 뿌리이고, 가정하는 분포만 다름.
 - MLE는 Likelihood를 최대화하는 파라미터를 찾고, MAP는 사후 분포(Posterior Distribution)의 값을 최대화하는 파라미터를 찾음.
+- 이외 수식은 책과 MML에서 다룸.
