@@ -169,7 +169,7 @@ ReLU(Rectified Linear Unit)
 - 퍼셉트론: hidden layer 없이 unit step function을 활성화 함수로 사용허눈 단층 신경망 모델.
 - 선형 분류: 분류 경계가 선형인 경우. (입력과 출력의 관계는 비선형적일수 있음.)
 
-Unit Step Function을 사용한 모델의 두 가지 문제점 -> Sigmoid 도입해서 해결.
+**Unit Step Function을 사용한 모델의 두 가지 문제점 -> Sigmoid 도입해서 해결.**
 - 미분 불가능: 역전파 과정에서 모든 파라미터에 대한 편미분이 0이 되어 학습 불가능.
 - 극단적 분류: 출력값이 0 또는 1이기에 분류 경계선 근처의 미묘한 차이 반영X.
 
@@ -185,7 +185,7 @@ BCE Loss(MLE: Maximum Likelihood Estimation 관점에서 해석)
 - Underflow 문제: ![image](https://github.com/user-attachments/assets/bb542001-5064-4bc5-9ffb-6130b5f8b348) 기본적으로는 이와 같이 식이 나오는데, 곱하는 과정에서 값이 계속 작아지기 때문에 로그를 취함(컴퓨터의 부동소수점 문제 해결).
 - 로그 내부의 값이 0과 1 사이이므로 로그 앞에 -1을 곱해 양수로 만들어줌. -> 굳이 양수로 만드는 이유는 '최소화'문제로 바꾸기 위함임.
 
-로지스틱 회귀(Logistic Regression)
+**로지스틱 회귀(Logistic Regression)**
 - 입력과 출력 사이의 관계를 확률 함수로 표현하고 이 함수를 은닉층이 없는 인공 신경망으로 놓고 추정하는 방법.
 - 분류 문제를 다루지만 회귀라는 이름을 가짐(근본적으로 두 방식이 같은 접근 방식이기 때문).
 - 로지스틱 회귀는 입력과 출력 사이의 관계를 Logistic 함수로 놓고 이 함수의 파라미터를 추정하는 것을 목표로 함.
@@ -197,7 +197,7 @@ BCE Loss(MLE: Maximum Likelihood Estimation 관점에서 해석)
 - 즉, 인공 신경망의 역할은 입력값과 Logit 사이의 선형 관계를 찾는 것이며 Sigmoid는 Logit을 확률로 변환하고 BCE Loss를 계산하기 위해 사용되는 함수임.
 - 따라서 로지스틱 회귀는 선형 회귀를 통해 Logit을 예측하고 이를 확률로 변환하여 이진 분류 문제를 해결하는 방법임.
 
-이진 분류에 MSE Loss를 도입하면 어떻게 될까?
+**이진 분류에 MSE Loss를 도입하면 어떻게 될까?**
 - 실험을 위해 레이블이 1인 데이터 하나에 대한 MSE Loss와 BCE Loss를 비교해 보겠음.
 - 이 때 MSE Loss는 ![image](https://github.com/user-attachments/assets/fd7c118d-1646-4b9f-b353-acc615042b24), BCE Loss는 ![image](https://github.com/user-attachments/assets/8d68feb7-c833-4788-b98e-077264b3d142) 가 됨.
 - 그래프로 표현하면 0 < q < 1의 범위에서 MSE Loss는 이차함수, BCE Loss는 로그함수의 형태를 띄며 BCE Loss는 0으로 다가갈수록 무한대로 발산함.
@@ -207,12 +207,12 @@ BCE Loss(MLE: Maximum Likelihood Estimation 관점에서 해석)
 - 결론: 이진 분류 문제에서는 BCE Loss가 잘못된 예측에 더 강력한 페널티를 부과하고 최적화 과정에서 더 안정적인 특성을 보여주기 때문에 사용됨.
 - 물론 상황에 따라 다를 수는 있다..
 
-딥러닝과 MLE
+**딥러닝과 MLE**
 - Loss를 최소화하는 파라미터를 찾는 학습 과정은 MLE를 최대로 하는 파라미터를 찾는 과정과 같음.
 - 사실 BCE와 MLE도 이 맥락에서는 Likelihood 최대화라는 공통점을 갖는다.
 - 자세한 수학적 개념은 MML 공부하면서 다룰 예정. (생략함)
 
-Loss 함수와 NLL(Negative Log-Likelihood)
+**Loss 함수와 NLL(Negative Log-Likelihood)**
 - ![image](https://github.com/user-attachments/assets/cf6c4708-7489-4ade-b5ff-5e102521a939) 이 식은 베르누이 분포임..
 - 그리고 이 식은 개별 시행이 독립시행임을 가정했음.
 - 여기서 -1/n log를 취한게 바로 BCE Loss.
@@ -231,7 +231,7 @@ Loss 함수와 NLL(Negative Log-Likelihood)
 - 결론적으로 분포를 f(x)라고 하면 Loss함수의 일반적인 표현식을 ![image](https://github.com/user-attachments/assets/75ad92a2-c043-4beb-b24e-394e3bef208a) 라 표현할 수 있음.
 - 따라서 문제의 특성에 맞는 확률 분포를 알맞게 가정하고 이에 기반한 Loss 함수를 직접 설계할 수 있어야 함.
 
-다중 분류
+**다중 분류**
 - One-Hot Encoding을 이용해 각 클래스를 표현함. (클래스 내의 우선순위를 부여하지 않게 됨. 클래스별로 0, 1, 2...식으로 표현하면 거리가 표현된다는 문제가 생김.)
 - 이 때 출력층이 0과 1 사이에 나오지 않으면 문제가 생김. 이를 위해 Softmax함수를 이용함.
 - Softmax를 사용하면 출력의 합이 1이 되므로 나머지 값들은 자연스럽게 0이 됨 -> 정답 출력값을 담당하는 노드 이외의 출력값은 고려하지 않아도 됨. -> softmax를 사용하면 해당 분류에서는 각 노드의 웨이트는 해당하는 클래스의 학습만 관여함. (더욱 독립적.)
@@ -256,7 +256,7 @@ Softmax 회귀(Softmax Regression, Logistic Regression을 여러 클래스로 �
 
 *Chapter5*
 
-Universal Approximation Theorem
+**Universal Approximation Theorem**
 - 딥러닝은 결국 입력과 출력 간의 관계를 나타내는 함수를 찾는 문제임.
 - MLP는 히든 레이어가 단 한 층만 있어도 제한된 범위 안의 어떤 연속 함수든 나타낼 수 있음이 증명되어있음.
 - 단, 히든 레이어가 충분한 수의 노드를 가져야 하고 활성화 함수가 다항 함수가 아니어야 한다는 전제가 있음.
@@ -264,3 +264,39 @@ Universal Approximation Theorem
 - 실제로는 효율성을 위해 노드를 줄이는 대신 층 수를 늘리는 방식을 선택.
 
 *Chapter6*
+
+**깊은 인공 신경망의 세 가지 주요 문제**
+기울기 소실(Vanishing Gradient)
+- 인공 신경망에서 입력층에 가까운 층일수록 그래디언트 크기가 점점 작아지는 현상.
+- ReLU 활성화 함수 사용, 배치 정규화(Batch Normalization) 기법 적용, 레이어 정규화(Layer Normalization) 기법 적용으로 해결.
+
+Loss Landscape 문제
+- Loss 함수의 형태가 복잡해져 최적의 해를 찾기 어려워지는 현상.
+- 모델에 Skip-Connection을 추가해 해결.
+
+과적합(Overfitting)
+- 데이터 증강(Data Augmentation), Dropout, L1&L2-Regularization 기법 적용으로 해결.
+
+**기울기 소실과 과소적합**
+- 기울기 소실은 입력층에 가까운 레이어일수록 파라미터들에 대한 편미분(그래디언트)이 0에 가까워져 학습에 심각한 불균형이 발생하는 것.
+- 직관적으로 이해해볼 때, sigmoid는 y의 변화폭이 x의 변화폭보다 작다. 이게 반복되면 입력층에 다가갈수록 변화량이 줄어듦.
+- 따라서 오히려 층이 적은 모델이 더 나은 성능을 보일 수 있다. 특히 층이 깊은데 기울기 소실이 일어나면 앞부분 Loss가 줄어들지 않아 학습이 안 됨. 또한 이 상태에서 학습이 안 된 입력층 노드들이 데이터를 망가뜨려 성능이 나빠질 수도 있음.
+- 이는 과소적합(Underfitting)이 일어난 것으로, 모델이 훈련 데이터의 패턴을 충분히 학습하지 못해 데이터와 동떨어진 함수를 학습하게 되는 것.
+
++) 층이 깊으면 과대&과소적합 모두 발생 가능함. 층이 깊으면 표현력이 늘어난다는 점에서 노이즈까지 학습해 과대적합이 발생할 수 있고, 기울기 소실이 일어나 과소적합이 발생할 수 있음.
+
+**ReLU(Rectified Linear Unit)**
+- 기울기 소실의 직접적 원인이 활성화 함수에 있으니 최대 기울기가 1/4인 Sigmoid함수의 한계를 극복해 기울기 소실을 완화하기 위해 제안됨.
+- ReLU는 기울기가 0 또는 1이므로 깊어질수록 기울기가 줄어드는 문제 해결됨.
+- 기울기가 0이라도 다른 노드의 값에서 더하는 값이 있기 때문에 괜찮음. -> 단, 노드의 개수가 적으면 오히려 sigmoid보다 기울기 소실에 취약함!
+- 따라서 ReLU를 사용하면 일부 경로가 차단되는 것은 피할 수 없지만, 살아있는 경로로는 온전히 그래디언트 전달이 가능함.
+- 기울기가 0일 때 발생하는 차단 문제가 심각해질 수 있기 때문에 Leaky ReLU와 Parametric ReLU가 제안됨.
+- Leaky ReLU는 음수 영역의 기울기가 0.01임.
+- Parametric ReLU는 음수 영역의 기울기를 학습 가능한 파라미터 a로 설정함. 활성화 함수 자체를 학습을 통해 최적화한다는 점이 핵심.
+- 정리하면 ReLU는 Linear의 기울기 소실이 없는 문제와 Sigmoid의 비선형성을 일부씩 가져온 함수임.
+- ReLU 후에도 Swish, ELU(Exponential Linear Unit), SELU(Scaled ELU), SERLU(Scaled Exponentially-Regularized Linear Unit) 등이 제안됨. 이들은 Relu의 음수 영역을 주로 변형함.
+
+- 결론적으로 활성화 함수는 해당 신경망의 전체적 구조와 노드의 수를 함께 고려해서 정해야 함.
+
+**배치 정규화(Batch Normalization)**
+- Batch에 대한 평균과 표준편차를 이용해 정규화(Normalization)를 수행하는 방식.
